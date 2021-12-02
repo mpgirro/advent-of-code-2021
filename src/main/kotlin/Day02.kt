@@ -4,11 +4,8 @@ class Day02 {
 
     private class Submarine {
         private var horizontal = 0
-            get() = field
         private var depth = 0
-            get() = field
         private var aim = 0
-            get() = field
 
         fun forward(x: Int) {
             horizontal += x
@@ -43,6 +40,7 @@ class Day02 {
                     "up" -> sub.up(value)
                     "down" -> sub.down(value)
                 }
+                println(sub)
             }
 
         println("position after following the planned course: ${sub.result()}")
