@@ -1,12 +1,9 @@
 import Util.Companion.readFileFromClasspath
+import java.lang.Integer.parseInt
 
 class Day03 {
 
-    private enum class Bit(public val bit: Char) {
-        ZERO('0'), ONE('1');
-    }
-
-    private val diagnosticReport = readFileFromClasspath("day03_example.txt")
+    private val diagnosticReport = readFileFromClasspath("day03_input.txt")
         .split("\n")
 
     private class BinaryDiagnostic(val binaryReport: List<String>) {
@@ -14,88 +11,82 @@ class Day03 {
         // Assume all diagnostic values have the same length!
         private val lineLength: Int = binaryReport[0].length
 
+        fun gammaRate(): Int = parseInt(gammaRate(0), 2)
 
+        private fun gammaRate(i: Int): String {
+            if (i >= lineLength) return ""
+            return mostCommonBitAtPosition(i) + gammaRate(i+1)
+        }
+
+        fun epsilonRate(): Int = parseInt(epsilonRate(0), 2)
+
+        private fun epsilonRate(i: Int): String {
+            if (i >= lineLength) return ""
+            return leastCommonBitAtPosition(i) + epsilonRate(i+1)
+        }
 
         fun powerConsumption(): Int = gammaRate() * epsilonRate()
 
-        fun lifeSupportRating(): Int = oxygenGeneratorRating() * cO2ScrubberRating()
+        fun lifeSupportRating(): Int = oxygenGeneratorRating() * co2ScrubberRating()
 
-        private fun gammaRate(): Int {
-            val result = buildString {
-                for (i in 0 until lineLength) {
-                    append(mostCommonBit(i))
-                }
-            }
+        private fun occurrencesAtPosition(position: Int, list: List<String>): Pair<Int, Int> {
+            val occurrences = list
+                .groupingBy { it[position] }
+                .eachCount()
 
-            return Integer.parseInt(result, 2)
+            val count1 = occurrences['1'] ?: throw IllegalStateException("No 1s counted")
+            val count0 = occurrences['0'] ?: throw IllegalStateException("No 0s counted")
+
+            return Pair(count1, count0)
         }
 
-        private fun epsilonRate(): Int {
-            val result = buildString {
-                for (i in 0 until lineLength) {
-                    append(leastCommonBit(i))
-                }
-            }
-
-            return Integer.parseInt(result, 2)
+        /** Calculate the most common bit (MCB) of the respective position */
+        private fun mostCommonBitAtPosition(position: Int): Char {
+            val (count1, count0) = occurrencesAtPosition(position, binaryReport)
+            return if (count1 > count0) '1' else '0'
         }
 
-        private fun oxygenGeneratorRating(): Int = foo(0, binaryReport, ::mostCommonBit)
-
-        private fun cO2ScrubberRating(): Int = foo(0, binaryReport, ::leastCommonBit)
-
-        private fun foo(i: Int, xs: List<String>, bitCriteria: (Int) -> Char): Int {
-            if (i > lineLength) throw IllegalStateException("Index got too large")
-            val ys = xs.filter { it[i] == bitCriteria(i) }
-            return if (ys.size > 1) {
-                foo(i+1, ys, bitCriteria)
-            } else if (ys.size == 1) {
-                Integer.parseInt(ys[0], 2)
-            } else {
-                throw IllegalStateException("List must not be empty")
-            }
+        /** Calculate the least common bit (LCB) of the respective position */
+        private fun leastCommonBitAtPosition(position: Int): Char {
+            val (count1, count0) = occurrencesAtPosition(position, binaryReport)
+            return if (count1 > count0) '0' else '1'
         }
 
-        /**
-         * Calculate the most common bit (MCB) of the respective position
-         */
-        private fun mostCommonBit(position: Int): Char = occurrences(position).mostCommonBit().bit
+        private fun is1(i: Int): (String) -> Boolean = { s -> s[i] == '1' }
 
-        /**
-         * Calculate the least common bit (LCB) of the respective position
-         */
-        private fun leastCommonBit(position: Int): Char = occurrences(position).leastCommonBit().bit
+        private fun is0(i: Int): (String) -> Boolean = { s -> s[i] == '0' }
 
-        private fun occurrences(position: Int): Map<Bit, Int> = binaryReport
-            .groupingBy { it[position] }
-            .eachCount()
-            .mapKeys {
-                when(it.key) {
-                    '1' -> Bit.ONE
-                    '0' -> Bit.ZERO
-                    else -> throw IllegalStateException("Invalid character encountered")
-                }
-            }
+        fun oxygenGeneratorRating(): Int = parseInt(oxygenGeneratorRating(0, binaryReport), 2)
 
-        fun Map<Bit, Int>.moreImportantBit(comparator: (Int, Int) -> Boolean): Bit  {
-            val ones = get(Bit.ONE) ?: throw IllegalStateException("No 1s counted")
-            val zeros = get(Bit.ZERO) ?: throw IllegalStateException("No 0s counted")
-            return if (comparator(ones, zeros)) Bit.ONE else Bit.ZERO
+        private fun oxygenGeneratorRating(i: Int, list: List<String>): String {
+            if (list.size == 1) return list[0]
+            val (count1, count0) = occurrencesAtPosition(i, list)
+            val criteria: (String) -> Boolean = if (count1 >= count0) is1(i) else is0(i)
+            return oxygenGeneratorRating(i+1, list.filter(criteria))
         }
 
-        fun Map<Bit, Int>.mostCommonBit(): Bit  = moreImportantBit { ones, zero -> ones > zero }
+        fun co2ScrubberRating(): Int = parseInt(co2ScrubberRating(0, binaryReport), 2)
 
-        fun Map<Bit, Int>.leastCommonBit(): Bit  = moreImportantBit { ones, zero -> ones <= zero }
+        private fun co2ScrubberRating(i: Int, list: List<String>): String {
+            if (list.size == 1) return list[0]
+            val (count1, count0) = occurrencesAtPosition(i, list)
+            val criteria: (String) -> Boolean = if (count1 < count0) is1(i) else is0(i)
+            return co2ScrubberRating(i+1, list.filter(criteria))
+        }
     }
 
     fun task1() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
         println("the power consumption of the submarine is: ${diagnostic.powerConsumption()}")
+        println("\tgamma rate: ${diagnostic.gammaRate()}")
+        println("\tepsilon rate: ${diagnostic.epsilonRate()}")
     }
 
     fun task2() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
         println("the life support rating of the submarine is: ${diagnostic.lifeSupportRating()}")
+        println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating()}")
+        println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating()}")
     }
 
 }
