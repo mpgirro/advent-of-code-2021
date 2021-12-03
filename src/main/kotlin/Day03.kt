@@ -8,26 +8,30 @@ class Day03 {
 
     private class BinaryDiagnostic(val binaryReport: List<String>) {
 
-        // Assume all diagnostic values have the same length!
-        private val lineLength: Int = binaryReport[0].length
+        val gammaRate: Int by lazy { parseInt(gammaRate(0), 2) }
 
-        fun gammaRate(): Int = parseInt(gammaRate(0), 2)
+        val epsilonRate: Int by lazy { parseInt(epsilonRate(0), 2) }
+
+        val oxygenGeneratorRating: Int by lazy { parseInt(oxygenGeneratorRating(0, binaryReport), 2) }
+
+        val co2ScrubberRating: Int by lazy { parseInt(co2ScrubberRating(0, binaryReport), 2) }
+
+        val powerConsumption: Int by lazy { gammaRate * epsilonRate }
+
+        val lifeSupportRating: Int by lazy { oxygenGeneratorRating * co2ScrubberRating }
+
+        // Assume all diagnostic values have the same length!
+        private val lineLength: Int by lazy { binaryReport[0].length }
 
         private fun gammaRate(i: Int): String {
             if (i >= lineLength) return ""
             return mostCommonBitAtPosition(i) + gammaRate(i+1)
         }
 
-        fun epsilonRate(): Int = parseInt(epsilonRate(0), 2)
-
         private fun epsilonRate(i: Int): String {
             if (i >= lineLength) return ""
             return leastCommonBitAtPosition(i) + epsilonRate(i+1)
         }
-
-        fun powerConsumption(): Int = gammaRate() * epsilonRate()
-
-        fun lifeSupportRating(): Int = oxygenGeneratorRating() * co2ScrubberRating()
 
         private fun occurrencesAtPosition(position: Int, list: List<String>): Pair<Int, Int> {
             val occurrences = list
@@ -56,16 +60,12 @@ class Day03 {
 
         private fun is0(i: Int): (String) -> Boolean = { s -> s[i] == '0' }
 
-        fun oxygenGeneratorRating(): Int = parseInt(oxygenGeneratorRating(0, binaryReport), 2)
-
         private fun oxygenGeneratorRating(i: Int, list: List<String>): String {
             if (list.size == 1) return list[0]
             val (count1, count0) = occurrencesAtPosition(i, list)
             val criteria: (String) -> Boolean = if (count1 >= count0) is1(i) else is0(i)
             return oxygenGeneratorRating(i+1, list.filter(criteria))
         }
-
-        fun co2ScrubberRating(): Int = parseInt(co2ScrubberRating(0, binaryReport), 2)
 
         private fun co2ScrubberRating(i: Int, list: List<String>): String {
             if (list.size == 1) return list[0]
@@ -77,16 +77,16 @@ class Day03 {
 
     fun task1() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("the power consumption of the submarine is: ${diagnostic.powerConsumption()}")
-        println("\tgamma rate: ${diagnostic.gammaRate()}")
-        println("\tepsilon rate: ${diagnostic.epsilonRate()}")
+        println("the power consumption of the submarine is: ${diagnostic.powerConsumption}")
+        println("\tgamma rate: ${diagnostic.gammaRate}")
+        println("\tepsilon rate: ${diagnostic.epsilonRate}")
     }
 
     fun task2() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("the life support rating of the submarine is: ${diagnostic.lifeSupportRating()}")
-        println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating()}")
-        println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating()}")
+        println("the life support rating of the submarine is: ${diagnostic.lifeSupportRating}")
+        println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating}")
+        println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating}")
     }
 
 }
