@@ -8,5 +8,6 @@ fun main(args: Array<String>) {
 //    day02.task()
 
     val day03 = Day03()
-    day03.task1()
+    day03.task1() // task 1 correct = 4139586
+    day03.task2() // task 1 correct = 4139586
 }
