@@ -11,6 +11,6 @@ fun main(args: Array<String>) {
 //    day03.task1()
 //    day03.task2()
 
-    val day04 = Day04("day04_example.txt")
-    day04.task1()
+    val day04 = Day04("day04_input.txt")
+    day04.task1() // --> 25023
 }
