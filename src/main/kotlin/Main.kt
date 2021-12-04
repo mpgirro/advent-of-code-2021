@@ -7,7 +7,10 @@ fun main(args: Array<String>) {
 //    val day02 = Day02()
 //    day02.task()
 
-    val day03 = Day03()
-    day03.task1()
-    day03.task2()
+//    val day03 = Day03()
+//    day03.task1()
+//    day03.task2()
+
+    val day04 = Day04("day04_example.txt")
+    day04.task1()
 }
