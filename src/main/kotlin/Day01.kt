@@ -1,19 +1,21 @@
 import Util.Companion.readFileFromClasspath
 
-class Day01 {
+class Day01(inputFileName: String) {
 
-    private val measurements: List<Int> = readFileFromClasspath("day01_input.txt")
+    private val measurements: List<Int> = readFileFromClasspath(inputFileName)
         .split("\n")
         .map { it.toInt() }
 
-    /** Correct result is: 1624 */
-    fun part1() {
-        println("(challenge1) measurements that are larger than the previous measurement: ${countWindows(1, measurements)}")
+    fun part1(): Int = countWindows(1, measurements)
+
+    fun printPart1() {
+        println("(challenge1) measurements that are larger than the previous measurement: ${part1()}")
     }
 
-    /** Correct result is: 1653 */
-    fun part2() {
-        println("(challenge2) measurements that are larger than the previous measurement: ${countWindows(3, measurements)}")
+    fun part2(): Int = countWindows(3, measurements)
+
+    fun printPart2() {
+        println("(challenge2) measurements that are larger than the previous measurement: ${part2()}")
     }
 
     private fun countWindows(n: Int, ls: List<Int>): Int {
