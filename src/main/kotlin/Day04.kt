@@ -31,16 +31,10 @@ class Day04(inputFileName: String) {
         val boards: List<BingoBoard>
     )
 
-    private class BingoBoard(
-        private val board: Array<IntArray>,
-        private val marks: Array<BooleanArray>
-    ) {
+    private class BingoBoard(input: List<List<Int>>) {
+        private val board: Array<IntArray> = input.map { it.toIntArray() }.toTypedArray()
+        private val marks: Array<BooleanArray> = Array(5) { BooleanArray(5) { false } }
         private var lastMark = 0
-
-        constructor(input: List<List<Int>>) : this(
-            board = input.map { it.toIntArray() }.toTypedArray(),
-            marks = Array(5) { BooleanArray(5) { false } }
-        )
 
         fun containsRows(): Boolean = board.isNotEmpty()
 
@@ -80,7 +74,6 @@ class Day04(inputFileName: String) {
         override fun toString(): String {
             return "BingoBoard(board=${board.contentToString()}, marks=${marks.contentToString()}, lastMark=$lastMark)"
         }
-
     }
 
     private class BoardBuilder() {
@@ -112,21 +105,18 @@ class Day04(inputFileName: String) {
 
         fun getLoosingBoards(): List<BingoBoard> = boards.filter { !it.isWin() }
 
-        fun getWinningScore(): Int = getWinningBoard().score()
+        /** Returns remaining numbers not drawn yet */
+        fun markUntilFirstWinner(): List<Int> = markUntilFirstWinner(numbers)
 
-        /**
-         * @return the remaining numbers not drawn yet
-         */
-        fun markUntilFirstWinner(): List<Int> = markUntilWinner(numbers)
-
-        fun markUntilWinner(list: List<Int>): List<Int> {
+        private fun markUntilFirstWinner(list: List<Int>): List<Int> {
             if (list.isEmpty()) return emptyList()
             val rest = list.tail()
             mark(list.head())
-            return if (hasWinningBoard())
+            return if (hasWinningBoard()) {
                 rest
-            else
-                markUntilWinner(rest)
+            } else {
+                markUntilFirstWinner(rest)
+            }
         }
 
         private fun mark(number: Int) {
@@ -134,14 +124,13 @@ class Day04(inputFileName: String) {
         }
 
         private fun hasWinningBoard(): Boolean = boards.map { it.isWin() }.anyTrue()
-
     }
 
     fun task1(): Int {
         val input = InputParser(puzzle).parse()
         val bingo = BingoSubsystem(input)
         bingo.markUntilFirstWinner()
-        return bingo.getWinningScore()
+        return bingo.getWinningBoard().score()
     }
 
     fun printTask1() {
@@ -161,7 +150,7 @@ class Day04(inputFileName: String) {
                 )
                 continue
             } else {
-                return bingo.getWinningScore()
+                return bingo.getWinningBoard().score()
             }
         }
     }
