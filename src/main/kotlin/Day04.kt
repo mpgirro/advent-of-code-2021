@@ -31,35 +31,52 @@ class Day04(inputFileName: String) {
         val boards: List<BingoBoard>
     )
 
-    private class BingoBoard(input: List<List<Int>>) {
-        private val board: Array<IntArray> = input.map { it.toIntArray() }.toTypedArray()
-        private val marks: Array<BooleanArray> = Array(5) { BooleanArray(5) { false } }
+    private class BingoBoard(
+        private val board: Array<IntArray>,
+        private val marks: Array<BooleanArray>
+    ) {
         private var lastMark = 0
+
+        constructor(input: List<List<Int>>) : this(
+            board = input.map { it.toIntArray() }.toTypedArray(),
+            marks = Array(5) { BooleanArray(5) { false } }
+        )
+
         fun containsRows(): Boolean = board.isNotEmpty()
+
         fun mark(number: Int) {
             lastMark = number
-            for (x in 0 until 5) {
-                for (y in 0 until 5) {
-                    if (board[x][y] == number) {
-                        marks[x][y] = true
-                    }
+            forEachField { x, y ->
+                if (board[x][y] == number) {
+                    marks[x][y] = true
                 }
             }
         }
+
         fun isWin(): Boolean = hasWinningRow() || hasWinningColumn()
+
         fun score(): Int {
             var sum = 0
-            for (x in 0 until 5) {
-                for (y in 0 until 5) {
-                    if (marks[x][y] == false) {
-                        sum += board[x][y]
-                    }
+            forEachField { x, y ->
+                if (!marks[x][y]) {
+                    sum += board[x][y]
                 }
             }
             return sum * lastMark;
         }
+
         private fun hasWinningRow(): Boolean = (0 until 5).map { marks.getRow(it).allTrue() }.anyTrue()
+
         private fun hasWinningColumn(): Boolean = (0 until 5).map { marks.getColumn(it).allTrue() }.anyTrue()
+
+        private fun forEachField(block: (x: Int, y: Int) -> Unit) {
+            for (x in 0 until 5) {
+                for (y in 0 until 5) {
+                    block(x,y)
+                }
+            }
+        }
+
         override fun toString(): String {
             return "BingoBoard(board=${board.contentToString()}, marks=${marks.contentToString()}, lastMark=$lastMark)"
         }
@@ -67,7 +84,9 @@ class Day04(inputFileName: String) {
     }
 
     private class BoardBuilder() {
+
         private val rows: MutableList<List<Int>> = mutableListOf()
+
         fun add(line: String): BoardBuilder = apply {
             val row = line
                 .split(" ")
@@ -75,6 +94,7 @@ class Day04(inputFileName: String) {
                 .map { it.toInt() }
             rows.add(row)
         }
+
         fun build(): BingoBoard = BingoBoard(rows)
     }
 
@@ -92,15 +112,21 @@ class Day04(inputFileName: String) {
         fun mark(number: Int) {
             boards.forEach { it.mark(number) }
         }
+
         fun hasWinningBoard(): Boolean = boards.map { it.isWin() }.anyTrue()
+
         fun getWinningScore(): Int = boards.filter { it.isWin() }.first().score()
     }
 
-    fun task1() {
+    fun task1(): Int {
         val input = InputParser(puzzle).parse()
         val bingo = BingoSubsystem(input)
         bingo.markUntilWinner()
-        println("the winning score is: ${bingo.getWinningScore()}")
+        return bingo.getWinningScore()
+    }
+
+    fun printTask1() {
+        println("the winning score is: ${task1()}")
     }
 
 }
