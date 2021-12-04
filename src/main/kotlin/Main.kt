@@ -10,7 +10,8 @@ fun main(args: Array<String>) {
 //    val day03 = Day03()
 //    day03.task1()
 //    day03.task2()
-
+    
     val day04 = Day04("day04_input.txt")
     day04.printTask1()
+    day04.printTask2()
 }

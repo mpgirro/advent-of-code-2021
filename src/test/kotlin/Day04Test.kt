@@ -17,4 +17,14 @@ internal class Day04Test {
         assertThat(Day04(inputFile).task1()).isEqualTo(25023)
     }
 
+    @Test
+    fun testExampleTask2() {
+        assertThat(Day04(exampleFile).task2()).isEqualTo(1924)
+    }
+
+    @Test
+    fun testInputTask2() {
+        assertThat(Day04(inputFile).task2()).isEqualTo(2634)
+    }
+
 }
