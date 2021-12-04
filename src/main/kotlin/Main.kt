@@ -11,9 +11,9 @@ fun main(args: Array<String>) {
     day02.printPart2()
 
     println("\n--- Day 3: Binary Diagnostic ---\n")
-    val day03 = Day03()
-    day03.task1()
-    day03.task2()
+    val day03 = Day03("day03_input.txt")
+    day03.printPart1()
+    day03.printPart2()
 
     println("\n--- Day 4: Giant Squid ---\n")
     val day04 = Day04("day04_input.txt")

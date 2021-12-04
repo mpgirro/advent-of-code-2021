@@ -1,9 +1,9 @@
 import Util.Companion.readFileFromClasspath
 import java.lang.Integer.parseInt
 
-class Day03 {
+class Day03(inputFileName: String) {
 
-    private val diagnosticReport = readFileFromClasspath("day03_input.txt")
+    private val diagnosticReport = readFileFromClasspath(inputFileName)
         .split("\n")
 
     private class BinaryDiagnostic(val binaryReport: List<String>) {
@@ -75,16 +75,20 @@ class Day03 {
         }
     }
 
-    fun task1() {
+    fun part1(): Int = BinaryDiagnostic(diagnosticReport).powerConsumption
+
+    fun printPart1() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("the power consumption of the submarine is: ${diagnostic.powerConsumption}")
+        println("Part 1: the power consumption of the submarine is: ${diagnostic.powerConsumption}")
         println("\tgamma rate: ${diagnostic.gammaRate}")
         println("\tepsilon rate: ${diagnostic.epsilonRate}")
     }
 
-    fun task2() {
+    fun part2(): Int = BinaryDiagnostic(diagnosticReport).lifeSupportRating
+
+    fun printPart2() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("the life support rating of the submarine is: ${diagnostic.lifeSupportRating}")
+        println("Part 2: the life support rating of the submarine is: ${diagnostic.lifeSupportRating}")
         println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating}")
         println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating}")
     }
