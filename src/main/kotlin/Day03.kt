@@ -1,10 +1,26 @@
-import Util.Companion.readFileFromClasspath
 import java.lang.Integer.parseInt
 
-class Day03(inputFileName: String) {
+class Day03(fileName: String): AdventDay(fileName) {
 
-    private val diagnosticReport = readFileFromClasspath(inputFileName)
-        .split("\n")
+    private val diagnosticReport = puzzle
+
+    override fun part1(): Int = BinaryDiagnostic(diagnosticReport).powerConsumption
+
+    override fun part2(): Int = BinaryDiagnostic(diagnosticReport).lifeSupportRating
+
+    override fun printResult() {
+        val diagnostic = BinaryDiagnostic(diagnosticReport)
+
+        println("\n--- Day 3: Binary Diagnostic ---\n")
+
+        println("Part 1: the power consumption of the submarine is: ${diagnostic.powerConsumption}")
+        println("\tgamma rate: ${diagnostic.gammaRate}")
+        println("\tepsilon rate: ${diagnostic.epsilonRate}")
+
+        println("Part 2: the life support rating of the submarine is: ${diagnostic.lifeSupportRating}")
+        println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating}")
+        println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating}")
+    }
 
     private class BinaryDiagnostic(val binaryReport: List<String>) {
 
@@ -73,24 +89,6 @@ class Day03(inputFileName: String) {
             val criteria: (String) -> Boolean = if (count1 < count0) is1(i) else is0(i)
             return co2ScrubberRating(i+1, list.filter(criteria))
         }
-    }
-
-    fun part1(): Int = BinaryDiagnostic(diagnosticReport).powerConsumption
-
-    fun printPart1() {
-        val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("Part 1: the power consumption of the submarine is: ${diagnostic.powerConsumption}")
-        println("\tgamma rate: ${diagnostic.gammaRate}")
-        println("\tepsilon rate: ${diagnostic.epsilonRate}")
-    }
-
-    fun part2(): Int = BinaryDiagnostic(diagnosticReport).lifeSupportRating
-
-    fun printPart2() {
-        val diagnostic = BinaryDiagnostic(diagnosticReport)
-        println("Part 2: the life support rating of the submarine is: ${diagnostic.lifeSupportRating}")
-        println("\toxygen generator rating: ${diagnostic.oxygenGeneratorRating}")
-        println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating}")
     }
 
 }

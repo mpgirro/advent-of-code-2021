@@ -1,9 +1,35 @@
-import Util.Companion.readFileFromClasspath
+class Day04(fileName: String): AdventDay(fileName) {
 
-class Day04(inputFileName: String) {
+    override fun part1(): Int {
+        val input = InputParser(puzzle).parse()
+        val bingo = BingoSubsystem(input)
+        bingo.markUntilFirstWinner()
+        return bingo.getWinningBoard().score()
+    }
 
-    private val puzzle: List<String> = readFileFromClasspath(inputFileName)
-        .split("\n")
+    override fun part2(): Int {
+        val input = InputParser(puzzle).parse()
+        var bingo = BingoSubsystem(input)
+
+        while (true) {
+            val rest = bingo.markUntilFirstWinner()
+            if (bingo.boards.size > 1) {
+                bingo = BingoSubsystem(
+                    numbers = rest,
+                    boards = bingo.getLoosingBoards()
+                )
+                continue
+            } else {
+                return bingo.getWinningBoard().score()
+            }
+        }
+    }
+
+    override fun printResult() {
+        println("\n--- Day 4: Giant Squid ---\n")
+        println("Part 1: the winning score is ${part1()}")
+        println("Part 2: the final score of the last board is ${part2()}")
+    }
 
     private class InputParser(val inputLines: List<String>) {
         fun parse(): InputParserResult = parseHead(inputLines)
@@ -71,9 +97,8 @@ class Day04(inputFileName: String) {
             }
         }
 
-        override fun toString(): String {
-            return "BingoBoard(board=${board.contentToString()}, marks=${marks.contentToString()}, lastMark=$lastMark)"
-        }
+        override fun toString(): String =
+            "BingoBoard(board=${board.contentToString()}, marks=${marks.contentToString()}, lastMark=$lastMark)"
     }
 
     private class BoardBuilder() {
@@ -124,39 +149,6 @@ class Day04(inputFileName: String) {
         }
 
         private fun hasWinningBoard(): Boolean = boards.map { it.isWin() }.anyTrue()
-    }
-
-    fun task1(): Int {
-        val input = InputParser(puzzle).parse()
-        val bingo = BingoSubsystem(input)
-        bingo.markUntilFirstWinner()
-        return bingo.getWinningBoard().score()
-    }
-
-    fun printTask1() {
-        println("the winning score is: ${task1()}")
-    }
-
-    fun task2(): Int {
-        val input = InputParser(puzzle).parse()
-        var bingo = BingoSubsystem(input)
-
-        while (true) {
-            val rest = bingo.markUntilFirstWinner()
-            if (bingo.boards.size > 1) {
-                bingo = BingoSubsystem(
-                    numbers = rest,
-                    boards = bingo.getLoosingBoards()
-                )
-                continue
-            } else {
-                return bingo.getWinningBoard().score()
-            }
-        }
-    }
-
-    fun printTask2() {
-        println("the final score of the last board is: ${task2()}")
     }
 
 }

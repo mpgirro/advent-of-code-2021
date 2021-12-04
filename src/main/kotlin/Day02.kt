@@ -1,11 +1,38 @@
-import Util.Companion.readFileFromClasspath
+class Day02(fileName: String): AdventDay(fileName) {
 
-class Day02(inputFileName: String) {
-
-    private val commands: List<Pair<String,Int>> = readFileFromClasspath(inputFileName)
-        .split("\n")
+    private val commands: List<Pair<String,Int>> = puzzle
         .map { it.split(" ") }
         .map { (first, second) -> Pair(first, second.toInt()) }
+
+    override fun part1(): Int {
+        val sub = SubmarinePart1()
+        commands.forEach { (command, value) ->
+            when (command) {
+                "forward" -> sub.forward(value)
+                "up" -> sub.up(value)
+                "down" -> sub.down(value)
+            }
+        }
+        return sub.result()
+    }
+
+    override fun part2(): Int {
+        val sub = SubmarinePart2()
+        commands.forEach { (command, value) ->
+            when (command) {
+                "forward" -> sub.forward(value)
+                "up" -> sub.up(value)
+                "down" -> sub.down(value)
+            }
+        }
+        return sub.result()
+    }
+
+    override fun printResult() {
+        println("\n--- Day 2: Dive! ---\n")
+        println("Part 1: position after following the planned course is ${part1()}")
+        println("Part 2: position after following the planned course is ${part2()}")
+    }
 
     private class SubmarinePart1 {
         private var horizontal = 0
@@ -49,38 +76,6 @@ class Day02(inputFileName: String) {
         fun result(): Int = horizontal * depth
 
         override fun toString(): String = "Submarine(horizontal=$horizontal, depth=$depth, aim=$aim)"
-    }
-
-    fun part1(): Int {
-        val sub = SubmarinePart1()
-        commands.forEach { (command, value) ->
-                when (command) {
-                    "forward" -> sub.forward(value)
-                    "up" -> sub.up(value)
-                    "down" -> sub.down(value)
-                }
-            }
-        return sub.result()
-    }
-
-    fun printPart1() {
-        println("Part 1: position after following the planned course: ${part1()}")
-    }
-
-    fun part2(): Int {
-        val sub = SubmarinePart2()
-        commands.forEach { (command, value) ->
-                when (command) {
-                    "forward" -> sub.forward(value)
-                    "up" -> sub.up(value)
-                    "down" -> sub.down(value)
-                }
-            }
-        return sub.result()
-    }
-
-    fun printPart2() {
-        println("Part 2: position after following the planned course: ${part2()}")
     }
 
 }

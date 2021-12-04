@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test
 
 internal class Day03Test {
 
-    private val exampleFile = "day03_example.txt"
-    private val inputFile = "day03_input.txt"
+    private val exampleFile = "day03-example.txt"
+    private val inputFile = "day03-input.txt"
 
     @Test
     fun testExampleTask1() {

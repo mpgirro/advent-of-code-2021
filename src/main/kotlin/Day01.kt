@@ -1,21 +1,15 @@
-import Util.Companion.readFileFromClasspath
+class Day01(fileName: String): AdventDay(fileName) {
 
-class Day01(inputFileName: String) {
+    private val measurements: List<Int> = puzzle.map { it.toInt() }
 
-    private val measurements: List<Int> = readFileFromClasspath(inputFileName)
-        .split("\n")
-        .map { it.toInt() }
+    override fun part1(): Int = countWindows(1, measurements)
 
-    fun part1(): Int = countWindows(1, measurements)
+    override fun part2(): Int = countWindows(3, measurements)
 
-    fun printPart1() {
-        println("(challenge1) measurements that are larger than the previous measurement: ${part1()}")
-    }
-
-    fun part2(): Int = countWindows(3, measurements)
-
-    fun printPart2() {
-        println("(challenge2) measurements that are larger than the previous measurement: ${part2()}")
+    override fun printResult() {
+        println("\n--- Day 1: Sonar Sweep ---\n")
+        println("Part 1: the measurements that are larger than the previous measurement is ${part1()}")
+        println("Part 2: the measurements that are larger than the previous measurement is ${part2()}")
     }
 
     private fun countWindows(n: Int, ls: List<Int>): Int {
