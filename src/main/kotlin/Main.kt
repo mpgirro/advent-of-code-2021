@@ -6,8 +6,9 @@ fun main(args: Array<String>) {
     day01.printPart2()
 
     println("\n--- Day 2: Dive! ---\n")
-    val day02 = Day02()
-    day02.task()
+    val day02 = Day02("day02_input.txt")
+    day02.printPart1()
+    day02.printPart2()
 
     println("\n--- Day 3: Binary Diagnostic ---\n")
     val day03 = Day03()
