@@ -1,4 +1,4 @@
-fun main(args: Array<String>) {
+fun main() {
 
     Day01("day01-input.txt").printResult()
     Day02("day02-input.txt").printResult()

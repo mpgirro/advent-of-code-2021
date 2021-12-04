@@ -4,24 +4,23 @@ class Day04(fileName: String): AdventDay(fileName) {
         val input = InputParser(puzzle).parse()
         val bingo = BingoSubsystem(input)
         bingo.markUntilFirstWinner()
-        return bingo.getWinningBoard().score()
+        return bingo.winningBoard().score()
     }
 
     override fun part2(): Int {
         val input = InputParser(puzzle).parse()
-        var bingo = BingoSubsystem(input)
+        return markUntilLastWinner(BingoSubsystem(input))
+    }
 
-        while (true) {
-            val rest = bingo.markUntilFirstWinner()
-            if (bingo.boards.size > 1) {
-                bingo = BingoSubsystem(
-                    numbers = rest,
-                    boards = bingo.getLoosingBoards()
-                )
-                continue
-            } else {
-                return bingo.getWinningBoard().score()
-            }
+    private fun markUntilLastWinner(bingo: BingoSubsystem): Int {
+        val rest = bingo.markUntilFirstWinner()
+        return if (bingo.boards.size > 1) {
+            markUntilLastWinner(BingoSubsystem(
+                numbers = rest,
+                boards = bingo.loosingBoards()
+            ))
+        } else {
+            bingo.winningBoard().score()
         }
     }
 
@@ -126,9 +125,9 @@ class Day04(fileName: String): AdventDay(fileName) {
             boards = input.boards
         )
 
-        fun getWinningBoard(): BingoBoard = boards.filter { it.isWin() }.first()
+        fun winningBoard(): BingoBoard = boards.first { it.isWin() }
 
-        fun getLoosingBoards(): List<BingoBoard> = boards.filter { !it.isWin() }
+        fun loosingBoards(): List<BingoBoard> = boards.filter { !it.isWin() }
 
         /** Returns remaining numbers not drawn yet */
         fun markUntilFirstWinner(): List<Int> = markUntilFirstWinner(numbers)
