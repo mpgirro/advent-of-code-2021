@@ -16,15 +16,15 @@ internal class Day05Test {
     fun testInputTask1() {
         assertThat(Day05(inputFile).part1()).isEqualTo(6572)
     }
-/*
+
     @Test
     fun testExampleTask2() {
-        assertThat(Day05(exampleFile).part2()).isEqualTo(1924)
+        assertThat(Day05(exampleFile).part2()).isEqualTo(12)
     }
 
     @Test
     fun testInputTask2() {
-        assertThat(Day05(inputFile).part2()).isEqualTo(2634)
+        assertThat(Day05(inputFile).part2()).isEqualTo(21466)
     }
-    */
+
 }

@@ -7,41 +7,124 @@ class Day05(fileName: String): AdventDay(fileName) {
     private val lines: List<Line> = puzzle
         .map { line -> Line(line) }
 
-    private val grid: Grid = Grid(lines.maxCoordinateX(), lines.maxCoordinateY())
+    private val simpleMappingSystem = SimpleVentMappingSystem(lines.maxCoordinateX(), lines.maxCoordinateY())
+    private val advancedMappingSystem = AdvancedVentMappingSystem(lines.maxCoordinateX(), lines.maxCoordinateY())
 
-    private data class Grid(val sizeX: Int, val sizeY: Int) {
-        private val matrix: Array<Array<Int>> = Array(sizeY+1) { Array(sizeX+1) { 0 } }
-        fun get(x: Int, y: Int): Int = matrix[y][x]
+    private abstract class VentMappingSystem(val sizeX: Int, val sizeY: Int) {
+        private val grid: Array<Array<Int>> = Array(sizeY+1) { Array(sizeX+1) { 0 } }
+
+        abstract fun fillLine(line: Line)
+        fun fillLines(lines: List<Line>) = lines.forEach(::fillLine)
+
+        fun get(x: Int, y: Int): Int = grid[y][x]
         fun set(x: Int, y: Int, value: Int) {
-            matrix[y][x] = value
+            grid[y][x] = value
         }
         fun inc(x: Int, y: Int) {
-            matrix[y][x] += 1
+            grid[y][x] += 1
         }
 
-        fun overlapCount(): Int = matrix.flatten().filter { it > 1 }.count()
+        fun overlapCount(): Int = grid.flatten().count { it > 1 }
 
         override fun toString(): String =
-            matrix.joinToString(separator = "\n") { line ->
+            grid.joinToString(separator = "\n") { line ->
                 line.joinToString(separator = " ") {
                     it.toString().padStart(3)
                 }
             }
     }
 
+    private class SimpleVentMappingSystem(sizeX: Int, sizeY: Int) : VentMappingSystem(sizeX, sizeY) {
+        override fun fillLine(line: Line) {
+            val (p1, p2) = line
+            if (p1.y == p2.y) {
+                val y = p1.y // horizontal: a.y == b.y
+                for (x in min(p1.x, p2.x)..max(p1.x, p2.x)) {
+                    inc(x,y)
+                }
+            } else if (p1.x == p2.x) {
+                // vertical: a.x == b.x
+                val x = p1.x
+                for (y in min(p1.y, p2.y)..max(p1.y, p2.y)) {
+                    inc(x,y)
+                }
+            }
+        }
+    }
+
+    private class AdvancedVentMappingSystem(sizeX: Int, sizeY: Int) : VentMappingSystem(sizeX, sizeY) {
+        override fun fillLine(line: Line) {
+            val (p1, p2) = line
+            if (p1.y == p2.y) {
+                val y = p1.y // horizontal: a.y == b.y
+                for (x in min(p1.x, p2.x)..max(p1.x, p2.x)) {
+                    inc(x,y)
+                }
+            } else if (p1.x == p2.x) {
+                // vertical: a.x == b.x
+                val x = p1.x
+                for (y in min(p1.y, p2.y)..max(p1.y, p2.y)) {
+                    inc(x,y)
+                }
+            } else {
+                if (p1.x < p2.x && p1.y < p2.y) {
+                    // inc x from p1.x -> p2.x, inc y from p1.y to p2.y
+                    var x = p1.x
+                    var y = p1.y
+                    while (x <= p2.x && y <= p2.y) {
+                        inc(x,y)
+                        x += 1
+                        y += 1
+                    }
+                } else if (p1.x < p2.x && p1.y > p2.y) {
+                    // inc x from p1.x -> p2.x, inc y from p2.y to p1.y
+                    var x = p1.x
+                    var y = p1.y
+                    while (x <= p2.x && y >= p2.y) {
+                        inc(x,y)
+                        x += 1
+                        y -= 1
+                    }
+                } else if (p1.x > p2.x && p1.y < p2.y) {
+                    // inc x from p2.x -> p1.x, inc y from p1.y to p2.y
+                    var x = p1.x
+                    var y = p1.y
+                    while (x >= p2.x && y <= p2.y) {
+                        inc(x,y)
+                        x -= 1
+                        y += 1
+                    }
+                } else if (p1.x > p2.x && p1.y > p2.y) {
+                    // inc x from p2.x -> p1.x, inc y from p2.y to p1.y
+                    var x = p1.x
+                    var y = p1.y
+                    while (x >= p2.x && y >= p2.y) {
+                        inc(x,y)
+                        x -= 1
+                        y -= 1
+                    }
+                } else {
+                    throw IllegalStateException("This should never happen")
+                }
+            }
+        }
+    }
+
     override fun part1(): Int {
-        lines.forEach(::fillLine)
-        return grid.overlapCount()
+        simpleMappingSystem.fillLines(lines)
+        return simpleMappingSystem.overlapCount()
     }
 
     override fun part2(): Int {
-        TODO("Not yet implemented")
+        advancedMappingSystem.fillLines(lines)
+        println(advancedMappingSystem)
+        return advancedMappingSystem.overlapCount()
     }
 
     override fun printResult() {
         println("\n--- Day 5: Hydrothermal Venture ---\n")
         println("Part 1: how many points do at least two lines overlap ${part1()}")
-//        println("Part 2: the final score of the last board is ${part2()}")
+        println("Part 2: how many points do at least two lines overlap ${part2()}")
     }
 
 
@@ -80,21 +163,5 @@ class Day05(fileName: String): AdventDay(fileName) {
 
     private fun maxY(list: List<Point>): Int =
         list.map { it.y }.maxOrNull() ?: throw IllegalArgumentException("No coordinate points available")
-
-    private fun fillLine(line: Line) {
-        val (p1, p2) = line
-        if (p1.y == p2.y) {
-            val y = p1.y // horizontal: a.y == b.y
-            for (x in min(p1.x, p2.x)..max(p1.x, p2.x)) {
-                grid.inc(x,y)
-            }
-        } else if (p1.x == p2.x) {
-            // vertical: a.x == b.x
-            val x = p1.x
-            for (y in min(p1.y, p2.y)..max(p1.y, p2.y)) {
-                grid.inc(x,y)
-            }
-        }
-    }
 
 }
