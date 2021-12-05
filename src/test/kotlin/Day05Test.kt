@@ -11,7 +11,6 @@ internal class Day05Test {
         assertThat(Day05(exampleFile).part1()).isEqualTo(5)
     }
 
-
     @Test
     fun testInputTask1() {
         assertThat(Day05(inputFile).part1()).isEqualTo(6572)
