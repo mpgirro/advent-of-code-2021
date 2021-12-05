@@ -22,8 +22,8 @@ class Day05(fileName: String): AdventDay(fileName) {
 
     override fun printResult() {
         println("\n--- Day 5: Hydrothermal Venture ---\n")
-        println("Part 1: how many points do at least two lines overlap ${part1()}")
-        println("Part 2: how many points do at least two lines overlap ${part2()}")
+        println("Part 1: overlapping points (horizontal, vertical) count is ${part1()}")
+        println("Part 2: overlapping points (horizontal, vertical, diagonal) count is ${part2()}")
     }
 
     private data class Line(val p1: Point, val p2: Point) {
