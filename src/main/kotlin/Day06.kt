@@ -4,15 +4,9 @@ class Day06(fileName: String): AdventDay(fileName) {
         .flatMap { it.split(",") }
         .map { it.toInt() }
 
-    override fun part1(): Long {
-        val fishMap = FishMap(initialFish)
-        return fishMap.cycle(80)
-    }
+    override fun part1(): Long = EvolutionMap(initialFish).cycle(80)
 
-    override fun part2(): Long {
-        val fishMap = FishMap(initialFish)
-        return fishMap.cycle(256)
-    }
+    override fun part2(): Long = EvolutionMap(initialFish).cycle(256)
 
     override fun printResult() {
         println("\n--- Day 6: Lanternfish ---\n")
@@ -20,8 +14,8 @@ class Day06(fileName: String): AdventDay(fileName) {
         println("Part 2: after 256 days the amount of lanternfish would be: ${part2()}")
     }
 
-    private class FishMap(initial: List<Int>) {
-        private var timerMap: Map<Int, Long> = timerMap(initial)
+    private class EvolutionMap(fish: List<Int>) {
+        private var timerMap: Map<Int, Long> = timerMap(fish)
 
         fun cycle(days: Int): Long {
             for (day in 0 until days) {
