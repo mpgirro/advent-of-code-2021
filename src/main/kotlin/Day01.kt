@@ -2,9 +2,9 @@ class Day01(fileName: String): AdventDay(fileName) {
 
     private val measurements: List<Int> = puzzle.map { it.toInt() }
 
-    override fun part1(): Int = countWindows(1, measurements)
+    override fun part1(): Long = countWindows(1, measurements)
 
-    override fun part2(): Int = countWindows(3, measurements)
+    override fun part2(): Long = countWindows(3, measurements)
 
     override fun printResult() {
         println("\n--- Day 1: Sonar Sweep ---\n")
@@ -12,7 +12,7 @@ class Day01(fileName: String): AdventDay(fileName) {
         println("Part 2: the measurements that are larger than the previous measurement is ${part2()}")
     }
 
-    private fun countWindows(n: Int, ls: List<Int>): Int {
+    private fun countWindows(n: Int, ls: List<Int>): Long {
         val a = ls.head(n)
         val b = ls.tail().head(n)
 

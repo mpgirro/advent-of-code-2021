@@ -1,15 +1,15 @@
 class Day04(fileName: String): AdventDay(fileName) {
 
-    override fun part1(): Int {
+    override fun part1(): Long {
         val input = InputParser(puzzle).parse()
         val bingo = BingoSubsystem(input)
         bingo.markUntilFirstWinner()
-        return bingo.winningBoard().score()
+        return bingo.winningBoard().score().toLong()
     }
 
-    override fun part2(): Int {
+    override fun part2(): Long {
         val input = InputParser(puzzle).parse()
-        return markUntilLastWinner(BingoSubsystem(input))
+        return markUntilLastWinner(BingoSubsystem(input)).toLong()
     }
 
     private fun markUntilLastWinner(bingo: BingoSubsystem): Int {

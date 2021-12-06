@@ -11,7 +11,6 @@ internal class Day06Test {
         assertThat(Day06(exampleFile).part1()).isEqualTo(5934)
     }
 
-
     @Test
     fun testInputTask1() {
         assertThat(Day06(inputFile).part1()).isEqualTo(362639)
@@ -21,10 +20,10 @@ internal class Day06Test {
     fun testExampleTask2() {
         assertThat(Day06(exampleFile).part2()).isEqualTo(26984457539)
     }
-/*
+
     @Test
     fun testInputTask2() {
-        assertThat(Day06(inputFile).part2()).isEqualTo(21466)
+        assertThat(Day06(inputFile).part2()).isEqualTo(1639854996917)
     }
-     */
+
 }

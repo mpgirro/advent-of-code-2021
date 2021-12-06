@@ -4,9 +4,9 @@ class Day03(fileName: String): AdventDay(fileName) {
 
     private val diagnosticReport = puzzle
 
-    override fun part1(): Int = BinaryDiagnostic(diagnosticReport).powerConsumption
+    override fun part1(): Long = BinaryDiagnostic(diagnosticReport).powerConsumption.toLong()
 
-    override fun part2(): Int = BinaryDiagnostic(diagnosticReport).lifeSupportRating
+    override fun part2(): Long = BinaryDiagnostic(diagnosticReport).lifeSupportRating.toLong()
 
     override fun printResult() {
         val diagnostic = BinaryDiagnostic(diagnosticReport)

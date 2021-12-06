@@ -10,14 +10,14 @@ class Day05(fileName: String): AdventDay(fileName) {
     private val simpleMappingSystem = VentMappingSystem(lines)
     private val advancedMappingSystem = AdvancedVentMappingSystem(lines)
 
-    override fun part1(): Int {
+    override fun part1(): Long {
         simpleMappingSystem.fillLines(lines)
-        return simpleMappingSystem.overlapCount()
+        return simpleMappingSystem.overlapCount().toLong()
     }
 
-    override fun part2(): Int {
+    override fun part2(): Long {
         advancedMappingSystem.fillLines(lines)
-        return advancedMappingSystem.overlapCount()
+        return advancedMappingSystem.overlapCount().toLong()
     }
 
     override fun printResult() {

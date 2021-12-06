@@ -4,7 +4,7 @@ class Day02(fileName: String): AdventDay(fileName) {
         .map { it.split(" ") }
         .map { (first, second) -> Pair(first, second.toInt()) }
 
-    override fun part1(): Int {
+    override fun part1(): Long {
         val sub = SubmarinePart1()
         commands.forEach { (command, value) ->
             when (command) {
@@ -16,7 +16,7 @@ class Day02(fileName: String): AdventDay(fileName) {
         return sub.result()
     }
 
-    override fun part2(): Int {
+    override fun part2(): Long {
         val sub = SubmarinePart2()
         commands.forEach { (command, value) ->
             when (command) {
@@ -50,7 +50,7 @@ class Day02(fileName: String): AdventDay(fileName) {
             depth -= x
         }
 
-        fun result(): Int = horizontal * depth
+        fun result(): Long = (horizontal * depth).toLong()
 
         override fun toString(): String = "Submarine(horizontal=$horizontal, depth=$depth)"
     }
@@ -73,7 +73,7 @@ class Day02(fileName: String): AdventDay(fileName) {
             aim -= x
         }
 
-        fun result(): Int = horizontal * depth
+        fun result(): Long = (horizontal * depth).toLong()
 
         override fun toString(): String = "Submarine(horizontal=$horizontal, depth=$depth, aim=$aim)"
     }
