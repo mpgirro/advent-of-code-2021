@@ -40,7 +40,7 @@ class Day05(fileName: String): AdventDay(fileName) {
         )
     }
 
-    private open class VentMappingSystem(private val input: List<Line>) {
+    private open class VentMappingSystem(input: List<Line>) {
         private val sizeX = input.maxCoordinateX() + 1
         private val sizeY = input.maxCoordinateY() + 1
         private val grid: Array<Array<Int>> = Array(sizeY) { Array(sizeX) { 0 } }
