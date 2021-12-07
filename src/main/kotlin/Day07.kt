@@ -6,9 +6,9 @@ class Day07(fileName: String): AdventDay(fileName) {
         .flatMap { it.split(",") }
         .map { it.toInt() }
 
-    override fun part1(): Long = findMinimalMoves(::identity).toLong()
+    override fun part1(): Long = findMinimalFuelRequirements(::identity).toLong()
 
-    override fun part2(): Long = findMinimalMoves(::sumOfOneToN).toLong()
+    override fun part2(): Long = findMinimalFuelRequirements(::sumOfOneToN).toLong()
 
     override fun printResult() {
         println("\n--- Day 7: The Treachery of Whales ---\n")
@@ -18,20 +18,20 @@ class Day07(fileName: String): AdventDay(fileName) {
 
     private val positionRange: IntRange = (initialPositions.minOrZero()..initialPositions.maxOrZero())
 
-    private fun findMinimalMoves(cost: (Int) -> Int): Int =
+    private fun findMinimalFuelRequirements(cost: (Int) -> Int): Int =
         positionRange
-            .map { targetPosition -> totalFuelRequirement(targetPosition, cost) }
+            .map { targetPosition -> totalFuelRequirements(targetPosition, cost) }
             .minOrZero()
 
-    private fun totalFuelRequirement(targetPosition: Int, cost: (Int) -> Int): Int =
+    private fun totalFuelRequirements(targetPosition: Int, cost: (Int) -> Int): Int =
         initialPositions.sumOf { aPosition -> cost(abs(aPosition - targetPosition)) }
 
     private fun <T> identity(t: T): T = t
 
     /** Sum of 1 to n, courtesy of Gauss */
-    private fun sumOfOneToN(n: Int) = ((n * (n + 1)) / 2)
+    private fun sumOfOneToN(n: Int): Int = n * (n + 1) / 2
 
-    private fun List<Int>.minOrZero() = minOrNull() ?: 0
-    private fun List<Int>.maxOrZero() = maxOrNull() ?: 0
+    private fun List<Int>.minOrZero(): Int = minOrNull() ?: 0
+    private fun List<Int>.maxOrZero(): Int = maxOrNull() ?: 0
 
 }
