@@ -1,18 +1,18 @@
-class Day06(fileName: String): AdventDay(fileName) {
+class Day06 : AdventDay(day = "day06") {
 
-    private val initialFish: List<Int> = puzzle
+    override fun part1(input: List<String>): Long = LanternfishEvolution(initialFish(input)).cycle(80)
+
+    override fun part2(input: List<String>): Long = LanternfishEvolution(initialFish(input)).cycle(256)
+
+    override fun printResult(input: List<String>) {
+        println("\n--- Day 6: Lanternfish ---\n")
+        println("Part 1: after 80 days the amount of Lanternfish would be: ${part1(input)}")
+        println("Part 2: after 256 days the amount of Lanternfish would be: ${part2(input)}")
+    }
+
+    private fun initialFish(input: List<String>): List<Int> = input
         .flatMap { it.split(",") }
         .map { it.toInt() }
-
-    override fun part1(): Long = LanternfishEvolution(initialFish).cycle(80)
-
-    override fun part2(): Long = LanternfishEvolution(initialFish).cycle(256)
-
-    override fun printResult() {
-        println("\n--- Day 6: Lanternfish ---\n")
-        println("Part 1: after 80 days the amount of Lanternfish would be: ${part1()}")
-        println("Part 2: after 256 days the amount of Lanternfish would be: ${part2()}")
-    }
 
     private class LanternfishEvolution(private val fish: List<Int>) {
 

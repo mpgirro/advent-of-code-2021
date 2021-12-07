@@ -4,27 +4,24 @@ import org.junit.jupiter.api.Test
 
 internal class Day02Test {
 
-    private val exampleFile = "day02-example.txt"
-    private val inputFile = "day02-input.txt"
-
     @Test
     fun testExampleTask1() {
-        assertThat(Day02(exampleFile).part1()).isEqualTo(150)
+        assertThat(Day02().example.part1()).isEqualTo(150)
     }
 
     @Test
     fun testInputTask1() {
-        assertThat(Day02(inputFile).part1()).isEqualTo(1746616)
+        assertThat(Day02().puzzle.part1()).isEqualTo(1746616)
     }
 
     @Test
     fun testExampleTask2() {
-        assertThat(Day02(exampleFile).part2()).isEqualTo(900)
+        assertThat(Day02().example.part2()).isEqualTo(900)
     }
 
     @Test
     fun testInputTask2() {
-        assertThat(Day02(inputFile).part2()).isEqualTo(1741971043)
+        assertThat(Day02().puzzle.part2()).isEqualTo(1741971043)
     }
 
 }

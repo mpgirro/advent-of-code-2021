@@ -2,29 +2,30 @@ import java.lang.Integer.max
 import java.lang.Integer.min
 import java.lang.Integer.parseInt
 
-class Day05(fileName: String): AdventDay(fileName) {
+class Day05 : AdventDay(day = "day05") {
 
-    private val lines: List<Line> = puzzle
-        .map { line -> Line(line) }
-
-    private val simpleMappingSystem = VentMappingSystem(lines)
-    private val advancedMappingSystem = AdvancedVentMappingSystem(lines)
-
-    override fun part1(): Long {
+    override fun part1(input: List<String>): Long {
+        val lines = lines(input)
+        val simpleMappingSystem = VentMappingSystem(lines)
         simpleMappingSystem.fillLines(lines)
         return simpleMappingSystem.overlapCount().toLong()
     }
 
-    override fun part2(): Long {
+    override fun part2(input: List<String>): Long {
+        val lines = lines(input)
+        val advancedMappingSystem = AdvancedVentMappingSystem(lines)
         advancedMappingSystem.fillLines(lines)
         return advancedMappingSystem.overlapCount().toLong()
     }
 
-    override fun printResult() {
+    override fun printResult(input: List<String>) {
         println("\n--- Day 5: Hydrothermal Venture ---\n")
-        println("Part 1: overlapping points (horizontal, vertical) count is ${part1()}")
-        println("Part 2: overlapping points (horizontal, vertical, diagonal) count is ${part2()}")
+        println("Part 1: overlapping points (horizontal, vertical) count is ${part1(input)}")
+        println("Part 2: overlapping points (horizontal, vertical, diagonal) count is ${part2(input)}")
     }
+
+    private fun lines(input: List<String>): List<Line> = input
+        .map { line -> Line(line) }
 
     private data class Line(val p1: Point, val p2: Point) {
         constructor(line: String) : this(

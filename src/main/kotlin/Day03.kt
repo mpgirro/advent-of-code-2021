@@ -1,15 +1,13 @@
 import java.lang.Integer.parseInt
 
-class Day03(fileName: String): AdventDay(fileName) {
+class Day03 : AdventDay(day = "day03") {
 
-    private val diagnosticReport = puzzle
+    override fun part1(input: List<String>): Long = BinaryDiagnostic(input).powerConsumption.toLong()
 
-    override fun part1(): Long = BinaryDiagnostic(diagnosticReport).powerConsumption.toLong()
+    override fun part2(input: List<String>): Long = BinaryDiagnostic(input).lifeSupportRating.toLong()
 
-    override fun part2(): Long = BinaryDiagnostic(diagnosticReport).lifeSupportRating.toLong()
-
-    override fun printResult() {
-        val diagnostic = BinaryDiagnostic(diagnosticReport)
+    override fun printResult(input: List<String>) {
+        val diagnostic = BinaryDiagnostic(input)
 
         println("\n--- Day 3: Binary Diagnostic ---\n")
 
@@ -22,22 +20,22 @@ class Day03(fileName: String): AdventDay(fileName) {
         println("\tCO2 scrubber rating: ${diagnostic.co2ScrubberRating}")
     }
 
-    private class BinaryDiagnostic(val binaryReport: List<String>) {
+    private class BinaryDiagnostic(val diagnosticReport: List<String>) {
 
         val gammaRate: Int by lazy { parseInt(gammaRate(0), 2) }
 
         val epsilonRate: Int by lazy { parseInt(epsilonRate(0), 2) }
 
-        val oxygenGeneratorRating: Int by lazy { parseInt(oxygenGeneratorRating(0, binaryReport), 2) }
+        val oxygenGeneratorRating: Int by lazy { parseInt(oxygenGeneratorRating(0, diagnosticReport), 2) }
 
-        val co2ScrubberRating: Int by lazy { parseInt(co2ScrubberRating(0, binaryReport), 2) }
+        val co2ScrubberRating: Int by lazy { parseInt(co2ScrubberRating(0, diagnosticReport), 2) }
 
         val powerConsumption: Int by lazy { gammaRate * epsilonRate }
 
         val lifeSupportRating: Int by lazy { oxygenGeneratorRating * co2ScrubberRating }
 
         // Assume all diagnostic values have the same length!
-        private val lineLength: Int by lazy { binaryReport[0].length }
+        private val lineLength: Int by lazy { diagnosticReport[0].length }
 
         private fun gammaRate(i: Int): String {
             if (i >= lineLength) return ""
@@ -62,13 +60,13 @@ class Day03(fileName: String): AdventDay(fileName) {
 
         /** Calculate the most common bit (MCB) of the respective position */
         private fun mostCommonBitAtPosition(position: Int): Char {
-            val (count1, count0) = occurrencesAtPosition(position, binaryReport)
+            val (count1, count0) = occurrencesAtPosition(position, diagnosticReport)
             return if (count1 > count0) '1' else '0'
         }
 
         /** Calculate the least common bit (LCB) of the respective position */
         private fun leastCommonBitAtPosition(position: Int): Char {
-            val (count1, count0) = occurrencesAtPosition(position, binaryReport)
+            val (count1, count0) = occurrencesAtPosition(position, diagnosticReport)
             return if (count1 > count0) '0' else '1'
         }
 

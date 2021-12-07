@@ -1,33 +1,21 @@
-class Day04(fileName: String): AdventDay(fileName) {
+class Day04 : AdventDay(day = "day04") {
 
-    override fun part1(): Long {
-        val input = InputParser(puzzle).parse()
-        val bingo = BingoSubsystem(input)
+    override fun part1(input: List<String>): Long {
+        val initialState = InputParser(input).parse()
+        val bingo = BingoSubsystem(initialState)
         bingo.markUntilFirstWinner()
         return bingo.winningBoard().score().toLong()
     }
 
-    override fun part2(): Long {
-        val input = InputParser(puzzle).parse()
-        return markUntilLastWinner(BingoSubsystem(input)).toLong()
+    override fun part2(input: List<String>): Long {
+        val initialState = InputParser(input).parse()
+        return markUntilLastWinner(BingoSubsystem(initialState)).toLong()
     }
 
-    private fun markUntilLastWinner(bingo: BingoSubsystem): Int {
-        val rest = bingo.markUntilFirstWinner()
-        return if (bingo.boards.size > 1) {
-            markUntilLastWinner(BingoSubsystem(
-                numbers = rest,
-                boards = bingo.loosingBoards()
-            ))
-        } else {
-            bingo.winningBoard().score()
-        }
-    }
-
-    override fun printResult() {
+    override fun printResult(input: List<String>) {
         println("\n--- Day 4: Giant Squid ---\n")
-        println("Part 1: the winning score is ${part1()}")
-        println("Part 2: the final score of the last board is ${part2()}")
+        println("Part 1: the winning score is ${part1(input)}")
+        println("Part 2: the final score of the last board is ${part2(input)}")
     }
 
     private class InputParser(val inputLines: List<String>) {
@@ -56,8 +44,8 @@ class Day04(fileName: String): AdventDay(fileName) {
         val boards: List<BingoBoard>
     )
 
-    private class BingoBoard(input: List<List<Int>>) {
-        private val board: Array<IntArray> = input.map { it.toIntArray() }.toTypedArray()
+    private class BingoBoard(initialState: List<List<Int>>) {
+        private val board: Array<IntArray> = initialState.map { it.toIntArray() }.toTypedArray()
         private val marks: Array<BooleanArray> = Array(5) { BooleanArray(5) { false } }
         private var lastMark = 0
 
@@ -148,6 +136,18 @@ class Day04(fileName: String): AdventDay(fileName) {
         }
 
         private fun hasWinningBoard(): Boolean = boards.map { it.isWin() }.anyTrue()
+    }
+
+    private fun markUntilLastWinner(bingo: BingoSubsystem): Int {
+        val rest = bingo.markUntilFirstWinner()
+        return if (bingo.boards.size > 1) {
+            markUntilLastWinner(BingoSubsystem(
+                numbers = rest,
+                boards = bingo.loosingBoards()
+            ))
+        } else {
+            bingo.winningBoard().score()
+        }
     }
 
 }

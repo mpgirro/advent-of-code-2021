@@ -1,11 +1,11 @@
 fun main() {
 
-    Day01("day01-input.txt").printResult()
-    Day02("day02-input.txt").printResult()
-    Day03("day03-input.txt").printResult()
-    Day04("day04-input.txt").printResult()
-    Day05("day05-input.txt").printResult()
-    Day06("day06-input.txt").printResult()
-    Day07("day07-input.txt").printResult()
+    Day01().puzzle.printResult()
+    Day02().puzzle.printResult()
+    Day03().puzzle.printResult()
+    Day04().puzzle.printResult()
+    Day05().puzzle.printResult()
+    Day06().puzzle.printResult()
+    Day07().puzzle.printResult()
 
 }

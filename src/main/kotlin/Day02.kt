@@ -1,38 +1,38 @@
-class Day02(fileName: String): AdventDay(fileName) {
+class Day02 : AdventDay(day = "day02") {
 
-    private val commands: List<Pair<String,Int>> = puzzle
+    override fun part1(input: List<String>): Long {
+        val sub = SubmarinePart1()
+        commands(input).forEach { (command, value) ->
+            when (command) {
+                "forward" -> sub.forward(value)
+                "up" -> sub.up(value)
+                "down" -> sub.down(value)
+            }
+        }
+        return sub.result()
+    }
+
+    override fun part2(input: List<String>): Long {
+        val sub = SubmarinePart2()
+        commands(input).forEach { (command, value) ->
+            when (command) {
+                "forward" -> sub.forward(value)
+                "up" -> sub.up(value)
+                "down" -> sub.down(value)
+            }
+        }
+        return sub.result()
+    }
+
+    override fun printResult(input: List<String>) {
+        println("\n--- Day 2: Dive! ---\n")
+        println("Part 1: position after following the planned course is ${part1(input)}")
+        println("Part 2: position after following the planned course is ${part2(input)}")
+    }
+
+    private fun commands(input: List<String>): List<Pair<String,Int>> = input
         .map { it.split(" ") }
         .map { (first, second) -> Pair(first, second.toInt()) }
-
-    override fun part1(): Long {
-        val sub = SubmarinePart1()
-        commands.forEach { (command, value) ->
-            when (command) {
-                "forward" -> sub.forward(value)
-                "up" -> sub.up(value)
-                "down" -> sub.down(value)
-            }
-        }
-        return sub.result()
-    }
-
-    override fun part2(): Long {
-        val sub = SubmarinePart2()
-        commands.forEach { (command, value) ->
-            when (command) {
-                "forward" -> sub.forward(value)
-                "up" -> sub.up(value)
-                "down" -> sub.down(value)
-            }
-        }
-        return sub.result()
-    }
-
-    override fun printResult() {
-        println("\n--- Day 2: Dive! ---\n")
-        println("Part 1: position after following the planned course is ${part1()}")
-        println("Part 2: position after following the planned course is ${part2()}")
-    }
 
     private class SubmarinePart1 {
         private var horizontal = 0

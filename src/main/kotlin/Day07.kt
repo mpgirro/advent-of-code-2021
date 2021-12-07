@@ -1,30 +1,36 @@
 import kotlin.math.abs
 
-class Day07(fileName: String): AdventDay(fileName) {
+class Day07 : AdventDay(day = "day07") {
 
-    private val initialPositions: List<Int> = puzzle
+    override fun part1(input: List<String>): Long =
+        findMinimalFuelRequirements(initialPositions(input), ::identity).toLong()
+
+    override fun part2(input: List<String>): Long =
+        findMinimalFuelRequirements(initialPositions(input), ::sumOfOneToN).toLong()
+
+    override fun printResult(input: List<String>) {
+        println("\n--- Day 7: The Treachery of Whales ---\n")
+        println("Part 1: the horizontal position with the least constant fuel requirement is ${part1(input)}")
+        println("Part 2: the horizontal position with the least growing fuel requirement is ${part2(input)}")
+    }
+
+    private fun initialPositions(input: List<String>): List<Int> = input
         .flatMap { it.split(",") }
         .map { it.toInt() }
 
-    override fun part1(): Long = findMinimalFuelRequirements(::identity).toLong()
+    private fun positionRange(positions: List<Int>): IntRange =
+        (positions.minOrZero()..positions.maxOrZero())
 
-    override fun part2(): Long = findMinimalFuelRequirements(::sumOfOneToN).toLong()
-
-    override fun printResult() {
-        println("\n--- Day 7: The Treachery of Whales ---\n")
-        println("Part 1: the horizontal position with the least constant fuel requirement is ${part1()}")
-        println("Part 2: the horizontal position with the least growing fuel requirement is ${part2()}")
-    }
-
-    private val positionRange: IntRange = (initialPositions.minOrZero()..initialPositions.maxOrZero())
-
-    private fun findMinimalFuelRequirements(cost: (Int) -> Int): Int =
-        positionRange
-            .map { targetPosition -> totalFuelRequirements(targetPosition, cost) }
+    private fun findMinimalFuelRequirements(positions: List<Int>, cost: (Int) -> Int): Int =
+        positionRange(positions)
+            .map { targetPosition -> totalFuelRequirements(positions, targetPosition, cost) }
             .minOrZero()
 
-    private fun totalFuelRequirements(targetPosition: Int, cost: (Int) -> Int): Int =
-        initialPositions.sumOf { aPosition -> cost(abs(aPosition - targetPosition)) }
+    private fun totalFuelRequirements(
+        positions: List<Int>,
+        targetPosition: Int,
+        cost: (Int) -> Int
+    ): Int = positions.sumOf { aPosition -> cost(abs(aPosition - targetPosition)) }
 
     private fun <T> identity(t: T): T = t
 
