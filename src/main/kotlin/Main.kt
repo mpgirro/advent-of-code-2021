@@ -6,5 +6,6 @@ fun main() {
     Day04("day04-input.txt").printResult()
     Day05("day05-input.txt").printResult()
     Day06("day06-input.txt").printResult()
+    Day07("day07-input.txt").printResult()
 
 }

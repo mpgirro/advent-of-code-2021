@@ -26,4 +26,5 @@ internal class Day01Test {
     fun testInputTask2() {
         assertThat(Day01(inputFile).part2()).isEqualTo(1653)
     }
+
 }
