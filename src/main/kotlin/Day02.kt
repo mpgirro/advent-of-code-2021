@@ -1,27 +1,27 @@
 class Day02 : AdventDay(day = "day02") {
 
     override fun part1(input: List<String>): Long {
-        val sub = SubmarinePart1()
+        val submarine = SubmarinePart1()
         commands(input).forEach { (command, value) ->
             when (command) {
-                "forward" -> sub.forward(value)
-                "up" -> sub.up(value)
-                "down" -> sub.down(value)
+                "forward" -> submarine.forward(value)
+                "up" -> submarine.up(value)
+                "down" -> submarine.down(value)
             }
         }
-        return sub.result()
+        return submarine.result()
     }
 
     override fun part2(input: List<String>): Long {
-        val sub = SubmarinePart2()
+        val submarine = SubmarinePart2()
         commands(input).forEach { (command, value) ->
             when (command) {
-                "forward" -> sub.forward(value)
-                "up" -> sub.up(value)
-                "down" -> sub.down(value)
+                "forward" -> submarine.forward(value)
+                "up" -> submarine.up(value)
+                "down" -> submarine.down(value)
             }
         }
-        return sub.result()
+        return submarine.result()
     }
 
     override fun printResult(input: List<String>) {

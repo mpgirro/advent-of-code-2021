@@ -15,6 +15,8 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("reflect"))
+
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junit5Version")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junit5Version")
     testImplementation("com.willowtreeapps.assertk:assertk:0.25")

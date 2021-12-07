@@ -1,11 +1,9 @@
+import kotlin.reflect.full.createInstance
+
 fun main() {
 
-    Day01().puzzle.printResult()
-    Day02().puzzle.printResult()
-    Day03().puzzle.printResult()
-    Day04().puzzle.printResult()
-    Day05().puzzle.printResult()
-    Day06().puzzle.printResult()
-    Day07().puzzle.printResult()
+    AdventDay::class.sealedSubclasses.forEach {
+        it.createInstance().puzzle.printResult()
+    }
 
 }
