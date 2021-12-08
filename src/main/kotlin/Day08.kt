@@ -100,22 +100,23 @@ class Day08 : AdventDay(day = "day08") {
 
         private val nine: SevenSegmentDigit by lazy {
             digit(9) {
-                digitMap.getValue(6).first { (it.subtract(seven).subtract(four)).size == 1 }
+                digitMap.getValue(6).first { (it.subtract(four).subtract(seven)).size == 1 }
             }
         }
 
-        private val signalPattern: Map<SevenSegmentDigit, Int> = mapOf(
-            zero  to 0,
-            one   to 1,
-            two   to 2,
-            three to 3,
-            four  to 4,
-            five  to 5,
-            six   to 6,
-            seven to 7,
-            eight to 8,
-            nine  to 9
-        )
+        private val signalPattern: Map<SevenSegmentDigit, Int> =
+            mapOf(
+                zero  to 0,
+                one   to 1,
+                two   to 2,
+                three to 3,
+                four  to 4,
+                five  to 5,
+                six   to 6,
+                seven to 7,
+                eight to 8,
+                nine  to 9
+            )
 
         fun unknot(digit: SevenSegmentDigit): Int = signalPattern.getValue(digit)
 
