@@ -39,7 +39,9 @@ class Day09 : AdventDay(day = "day09") {
         return HeightMap(fields)
     }
 
-    private data class Point(val x: Int, val y: Int)
+    private data class Point(val x: Int, val y: Int, val height: Int) {
+        constructor(x: Int, y: Int, heightInitializer: (Int,Int) -> Int) : this(x, y, heightInitializer(x,y))
+    }
 
     private class HeightMap(private val fields: Array<IntArray>) {
         
@@ -91,20 +93,15 @@ class Day09 : AdventDay(day = "day09") {
             y: Int,
             basinMap: MutableMap<Point, Boolean> = mutableMapOf()
         ): Int {
-            val up    = height(x, y - 1)
-            val down  = height(x, y + 1)
-            val right = height(x + 1, y)
-            val left  = height(x - 1, y)
-
-            mapOf(
-                Point(x, y - 1) to up,
-                Point(x, y + 1) to down,
-                Point(x + 1, y) to right,
-                Point(x - 1, y) to left
+            listOf(
+                Point(x, y - 1, ::height), // up
+                Point(x, y + 1, ::height), // down
+                Point(x + 1, y, ::height), // right
+                Point(x - 1, y, ::height)  // left
             ).forEach {
-                if (it.value in 0..8 && basinMap[it.key] == null) {
-                    basinMap[it.key] = true
-                    basinSize(it.key.x, it.key.y, basinMap)
+                if (it.height in 0..8 && !basinMap.containsKey(it)) {
+                    basinMap[it] = true
+                    basinSize(it.x, it.y, basinMap)
                 }
             }
 
