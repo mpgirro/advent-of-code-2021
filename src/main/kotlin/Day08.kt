@@ -22,7 +22,6 @@ class Day08 : AdventDay(day = "day08") {
         val (left, right) = inputLine.split('|').map { it.trim() }
         val segments = left.asDigits()
         val output = right.asDigits()
-
         return SevenSegmentDisplay(SevenSegmentWiring(segments), output)
     }
 
@@ -104,7 +103,7 @@ class Day08 : AdventDay(day = "day08") {
             }
         }
 
-        private val signalPattern: Map<SevenSegmentDigit, Int> =
+        private val wiringMap: Map<SevenSegmentDigit, Int> =
             mapOf(
                 zero  to 0,
                 one   to 1,
@@ -118,7 +117,7 @@ class Day08 : AdventDay(day = "day08") {
                 nine  to 9
             )
 
-        fun unknot(digit: SevenSegmentDigit): Int = signalPattern.getValue(digit)
+        fun unknot(digit: SevenSegmentDigit): Int = wiringMap.getValue(digit)
 
     }
 
