@@ -16,12 +16,12 @@ internal class Day13Test {
 
     @Test
     fun testExampleTask2() {
-        assertThat(Day13().example.part2()).isEqualTo(36)
+        assertThat(Day13().example.part2()).isEqualTo(16) // placeholder, result is text in ascii art output
     }
 
     @Test
     fun testInputTask2() {
-        assertThat(Day13().puzzle.part2()).isEqualTo(98) // placeholder, puzzle result is text in ascii art output
+        assertThat(Day13().puzzle.part2()).isEqualTo(98) // placeholder, result is text in ascii art output
     }
 
 }
